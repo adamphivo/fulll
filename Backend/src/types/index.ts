@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  fleets: Fleet[];
+  fleets: Fleet;
 }
 
 export interface Fleet {
