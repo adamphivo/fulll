@@ -1,6 +1,7 @@
-import { User } from "../Domain/User";
+import { User, Vehicule } from "../Domain";
 
-interface UserRepository {
+export interface UserRepository {
   save(user: User): Promise<void>;
-  getById(id: string): Promise<User>;
+  findById(id: string): Promise<User | null>;
+  registerVehicule(user: User, vehicule: Vehicule): Promise<void | string>;
 }

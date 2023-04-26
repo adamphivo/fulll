@@ -19,7 +19,7 @@ export class User {
       this.fleet.vehicules = [...this.fleet.vehicules, vehicule];
       return this;
     } else {
-      return Fleet.ALREADY_REGISTERED_MESSAGE;
+      throw Error(Fleet.ALREADY_REGISTERED_MESSAGE);
     }
   }
 }
