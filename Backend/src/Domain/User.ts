@@ -10,16 +10,8 @@ export class User {
     this.fleet = fleet;
   }
 
-  public addVehicule(vehicule: Vehicule): User | string {
-    const isAlreadyRegistered = this.fleet.vehicules.some(
-      (i) => i.plateNumber === vehicule.plateNumber
-    );
-
-    if (!isAlreadyRegistered) {
-      this.fleet.vehicules = [...this.fleet.vehicules, vehicule];
-      return this;
-    } else {
-      throw Error(Fleet.ALREADY_REGISTERED_MESSAGE);
-    }
+  public registerVehicule(vehicule: Vehicule): User {
+    this.fleet.vehicules = [...this.fleet.vehicules, vehicule];
+    return this;
   }
 }

@@ -1,5 +1,6 @@
 import { UserRepository } from "./UserRepository";
 import { User, Vehicule } from "../Domain";
+import { Location } from "../types";
 
 export class UserRepositoryMemory implements UserRepository {
   private users: Record<string, User> = {};
@@ -13,17 +14,20 @@ export class UserRepositoryMemory implements UserRepository {
     return user || null;
   }
 
-  async registerVehicule(
+  async registerVehicule(user: User, vehicule: Vehicule): Promise<User> {
+    this.users[user.id].fleet.vehicules.push(vehicule);
+    return this.users[user.id];
+  }
+
+  async parkVehicule(
     user: User,
-    vehicule: Vehicule
-  ): Promise<void | string> {
-    try {
-      user.addVehicule(vehicule);
-      this.users[user.id] = user;
-    } catch (e) {
-      if (e instanceof Error) {
-        return e.message;
-      }
-    }
+    vehicle: Vehicule,
+    location: Location
+  ): Promise<User> {
+    const index = this.users[user.id].fleet.vehicules.findIndex(
+      (i) => i.plateNumber === vehicle.plateNumber
+    );
+    this.users[user.id].fleet.vehicules[index].location = location;
+    return this.users[user.id];
   }
 }
