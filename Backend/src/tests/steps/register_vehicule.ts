@@ -15,7 +15,7 @@ Given("a vehicle", function () {
 });
 
 Given("I have registered this vehicle into my fleet", function () {
-  this.fleet.addVehicule(this.vehicule);
+  this.user.addVehicule(this.vehicule);
 });
 
 Given("the fleet of another user", function () {
@@ -26,20 +26,20 @@ Given("the fleet of another user", function () {
 Given(
   "this vehicle has been registered into the other user's fleet",
   function () {
-    this.otherFleet.addVehicule(this.vehicule);
+    this.otherUser.addVehicule(this.vehicule);
   }
 );
 
-When("I try to register this vehicle into my fleet", function () {
-  this.registerResult = this.fleet.addVehicule(this.vehicule);
-});
-
 When("I register this vehicle into my fleet", function () {
-  this.registerResult = this.fleet.addVehicule(this.vehicule);
+  this.registerResult = this.user.addVehicule(this.vehicule);
 });
 
 Then("this vehicle should be part of my vehicle fleet", function () {
-  if (!this.fleet.vehicules.includes(this.vehicule)) {
+  const isPartOfFleet = this.fleet.vehicules.some(
+    (i: Vehicule) => i.plateNumber === this.vehicule.plateNumber
+  );
+
+  if (!isPartOfFleet) {
     throw Error("Vehicule not added.");
   }
 });
@@ -47,6 +47,6 @@ Then("this vehicle should be part of my vehicle fleet", function () {
 Then(
   "I should be informed this this vehicle has already been registered into my fleet",
   function () {
-    assert.strictEqual(this.registerResult, Fleet.ALREADY_REGISTER_MESSAGE);
+    assert.strictEqual(this.registerResult, Fleet.ALREADY_REGISTERED_MESSAGE);
   }
 );
