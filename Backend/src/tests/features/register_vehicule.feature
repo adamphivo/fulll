@@ -3,6 +3,9 @@ Feature: Register a vehicle
     As an application user
     I should be able to register my vehicle
 
+  Background: 
+    Given an application user
+
   @critical
   Scenario: I can register a vehicle
     Given my fleet
