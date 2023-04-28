@@ -2,8 +2,7 @@ import assert from "assert";
 import { Given, When, Then, Before } from "@cucumber/cucumber";
 import { v4 as uuidv4 } from "uuid";
 import { Vehicule, User, Fleet } from "../../Domain";
-import sqlite3 from "sqlite3";
-import { open } from "sqlite";
+import { clearDb } from "../../lib/clearDb";
 import {
   UserRepositorySQLite,
   FleetRepositorySQLite,
@@ -19,16 +18,7 @@ import {
 } from "../../App/fleet/registerVehicule";
 
 Before(async () => {
-  const db = await open({
-    filename: "./super.db",
-    driver: sqlite3.Database,
-  });
-
-  await db.run("DELETE FROM fleets");
-  await db.run("DELETE FROM users");
-  await db.run("DELETE FROM vehicules");
-
-  await db.close();
+  await clearDb();
 });
 
 Given(
