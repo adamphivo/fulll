@@ -4,7 +4,7 @@ Feature: Register a vehicle
     I should be able to register my vehicle
 
   Background: 
-    Given an application user
+    Given I am an application user named "<Billy>"
 
   @critical
   Scenario: I can register a vehicle
@@ -18,11 +18,11 @@ Feature: Register a vehicle
     And a vehicle
     And I have registered this vehicle into my fleet
     When I register this vehicle into my fleet
-    Then I should be informed this this vehicle has already been registered into my fleet
+    Then I should be informed that this vehicle has already been registered into my fleet
 
   Scenario: Same vehicle can belong to more than one fleet
     Given my fleet
-    And the fleet of another user
+    And the fleet of another user named "<Samantha>"
     And a vehicle
     And this vehicle has been registered into the other user's fleet
     When I register this vehicle into my fleet

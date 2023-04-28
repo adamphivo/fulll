@@ -1,17 +1,11 @@
-import { Fleet } from "./Fleet";
-import { Vehicule } from "./Vehicule";
-
 export class User {
-  public id: string;
-  public fleet: Fleet;
+  constructor(private id: string, private fleetId: string) {}
 
-  constructor(id: string, fleet: Fleet) {
-    this.id = id;
-    this.fleet = fleet;
+  public getId() {
+    return this.id;
   }
 
-  public registerVehicule(vehicule: Vehicule): User {
-    this.fleet.vehicules = [...this.fleet.vehicules, vehicule];
-    return this;
+  public getFleetId() {
+    return this.fleetId;
   }
 }

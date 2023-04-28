@@ -2,11 +2,11 @@
   "name": "cucumber",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "cucumber-js tests",
+    "test": "cucumber-js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc"
+    "build": "tsc && ln -s dist/index.js fleet"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"
   }
 }

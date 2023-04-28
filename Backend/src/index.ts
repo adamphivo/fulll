@@ -1,5 +1,3 @@
-import { User, Fleet, Vehicule } from "./Domain";
+import { UserRepositorySQLite } from "./Infra/db/RepositoryBase";
 
-const user = new User("1", new Fleet("2", []));
-user.addVehicule(new Vehicule("fdfdf"));
-user.addVehicule(new Vehicule("fdfdf"));
+const toto = new UserRepositorySQLite("./db.db");

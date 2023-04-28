@@ -1,24 +1,23 @@
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  fleets: Fleet;
-}
-
-export interface Fleet {
-  id: string;
-  userId: string;
-  name: string;
-  vehicules: Vehicule[];
-}
-
-export interface Vehicule {
-  plateNumber: string;
-  location: Location;
-}
+import { User, Fleet, Vehicule } from "../Domain";
 
 export interface Location {
   longitude: string;
   latitude: string;
   altitude?: string;
+}
+
+export interface FleetRepository {
+  save(fleet: Fleet): Promise<void>;
+  findById(fleetId: string): Promise<Fleet | null>;
+  registerVehicule(fleetId: string, vehicule: Vehicule): Promise<Fleet>;
+}
+
+export interface UserRepository {
+  save(user: User): Promise<void>;
+  findById(id: string): Promise<User | null>;
+}
+
+export interface VehiculeRepository {
+  save(vehicle: Vehicule): Promise<void>;
+  findByPlateNumber(plateNumber: string): Promise<Vehicule | null>;
 }

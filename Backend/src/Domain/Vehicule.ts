@@ -1,10 +1,17 @@
 import type { Location } from "../types";
 
 export class Vehicule {
-  plateNumber: string;
-  location?: Location;
+  constructor(private plateNumber: string, private location?: Location) {}
 
-  constructor(plateNumber: string, location?: string) {
-    this.plateNumber = plateNumber;
+  public async setLocation(location: Location) {
+    this.location = location;
+  }
+
+  public getLocation() {
+    return this.location;
+  }
+
+  public getPlateNumber() {
+    return this.plateNumber;
   }
 }
