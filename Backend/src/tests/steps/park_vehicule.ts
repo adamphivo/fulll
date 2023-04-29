@@ -2,24 +2,24 @@ import assert from "assert";
 import { Given, When, Then } from "@cucumber/cucumber";
 import { generate } from "../../lib/generate";
 import {
-  ParkVehiculeCommand,
-  ParkVehiculeHandler,
-} from "../../App/vehicule/parkVehicule";
+  ParkVehicleCommand,
+  ParkVehicleHandler,
+} from "../../App/vehicle/parkVehicle";
 
 Given("a location", function () {
   this.location = generate.location();
 });
 
 Given("my vehicle has been parked into this location", async function () {
-  const command = new ParkVehiculeCommand(
+  const command = new ParkVehicleCommand(
     this.fleet,
-    this.vehicule.getPlateNumber(),
+    this.vehicle.getPlateNumber(),
     this.location
   );
 
-  const handler = new ParkVehiculeHandler(
+  const handler = new ParkVehicleHandler(
     this.fleetRepository,
-    this.vehiculeRepository
+    this.vehicleRepository
   );
 
   await handler.handle(command);
@@ -27,15 +27,15 @@ Given("my vehicle has been parked into this location", async function () {
 
 When("I park my vehicle at this location", async function () {
   try {
-    const command = new ParkVehiculeCommand(
+    const command = new ParkVehicleCommand(
       this.fleet,
-      this.vehicule.getPlateNumber(),
+      this.vehicle.getPlateNumber(),
       this.location
     );
 
-    const handler = new ParkVehiculeHandler(
+    const handler = new ParkVehicleHandler(
       this.fleetRepository,
-      this.vehiculeRepository
+      this.vehicleRepository
     );
 
     this.result = await handler.handle(command);

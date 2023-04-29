@@ -1,6 +1,6 @@
 import type { Location } from "../types";
 
-export class Vehicule {
+export class Vehicle {
   constructor(private plateNumber: string, private location?: Location) {}
 
   public async setLocation(location: Location) {

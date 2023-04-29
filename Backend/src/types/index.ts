@@ -1,15 +1,15 @@
-import { User, Fleet, Vehicule } from "../Domain";
+import { User, Fleet, Vehicle } from "../Domain";
 
 export interface Location {
   longitude: string;
   latitude: string;
-  altitude?: string;
+  altitude: string | undefined;
 }
 
 export interface FleetRepository {
   save(fleet: Fleet): Promise<void>;
   findById(fleetId: string): Promise<Fleet | null>;
-  registerVehicule(fleetId: string, vehicule: Vehicule): Promise<Fleet>;
+  registerVehicle(fleetId: string, vehicle: Vehicle): Promise<Fleet>;
 }
 
 export interface UserRepository {
@@ -17,7 +17,7 @@ export interface UserRepository {
   findById(id: string): Promise<User | null>;
 }
 
-export interface VehiculeRepository {
-  save(vehicle: Vehicule): Promise<void>;
-  findByPlateNumber(plateNumber: string): Promise<Vehicule | null>;
+export interface VehicleRepository {
+  save(vehicle: Vehicle): Promise<void>;
+  findByPlateNumber(plateNumber: string): Promise<Vehicle | null>;
 }

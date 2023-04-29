@@ -1,3 +1,0 @@
-# BDD
-
-## Cucumber

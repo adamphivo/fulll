@@ -3,11 +3,11 @@ import { open } from "sqlite";
 
 export async function clearDb() {
   const db = await open({
-    filename: "./super.db",
+    filename: "testDB.db",
     driver: sqlite3.Database,
   });
 
-  const tables = ["users", "fleets", "vehicules"];
+  const tables = ["users", "fleets", "vehicles"];
 
   for (const tableName in tables) {
     const exist = await db.get(

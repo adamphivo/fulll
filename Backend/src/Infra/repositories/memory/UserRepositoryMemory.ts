@@ -1,5 +1,5 @@
-import { UserRepository } from "../types";
-import { User } from "../Domain";
+import { UserRepository } from "../../../types";
+import { User } from "../../../Domain";
 
 export class UserRepositoryMemory implements UserRepository {
   private users: Record<string, User> = {};

@@ -4,9 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "cucumber-js",
+    "test": "cucumber-js --profile default",
     "dev": "nodemon src/index.ts",
-    "build": "tsc && ln -s dist/index.js fleet"
+    "clean": "rm -f fleet && rm -rf dist && rm -f *.db",
+    "compile": "tsc",
+    "makeExecutable": "ln -s dist/index.js fleet && chmod +x fleet",
+    "build": "npm run clean && npm run compile && npm run makeExecutable"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
     "sqlite": "^4.1.2",
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"

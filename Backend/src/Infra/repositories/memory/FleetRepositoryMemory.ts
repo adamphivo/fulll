@@ -1,5 +1,5 @@
-import { FleetRepository } from "../types";
-import { Fleet, Vehicule } from "../Domain";
+import { FleetRepository } from "../../../types";
+import { Fleet, Vehicle } from "../../../Domain";
 
 export class FleetRepositoryMemory implements FleetRepository {
   private fleets: Record<string, Fleet> = {};
@@ -20,8 +20,8 @@ export class FleetRepositoryMemory implements FleetRepository {
     return fleet || null;
   }
 
-  async registerVehicule(fleetId: string, vehicule: Vehicule): Promise<Fleet> {
-    this.fleets[fleetId].addVehicule(vehicule.getPlateNumber());
+  async registerVehicle(fleetId: string, vehicle: Vehicle): Promise<Fleet> {
+    this.fleets[fleetId].addVehicle(vehicle.getPlateNumber());
     return this.fleets[fleetId];
   }
 }

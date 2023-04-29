@@ -2,15 +2,15 @@ export class Fleet {
   constructor(
     private id: string,
     private userId: string,
-    private vehiculesIds: string[]
+    private vehiclesIds: string[]
   ) {}
 
-  public addVehicule(vehiculeId: string) {
-    this.vehiculesIds.push(vehiculeId);
+  public addVehicle(vehicleId: string) {
+    this.vehiclesIds.push(vehicleId);
   }
 
-  public getVehicules() {
-    return this.vehiculesIds;
+  public getVehicles() {
+    return this.vehiclesIds;
   }
 
   public getUserId() {

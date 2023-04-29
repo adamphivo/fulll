@@ -1,5 +1,5 @@
 import { Fleet } from "./Fleet";
 import { User } from "./User";
-import { Vehicule } from "./Vehicule";
+import { Vehicle } from "./Vehicle";
 
-export { User, Fleet, Vehicule };
+export { User, Fleet, Vehicle };

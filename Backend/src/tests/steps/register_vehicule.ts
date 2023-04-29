@@ -1,33 +1,40 @@
 import assert from "assert";
-import { Given, When, Then, Before } from "@cucumber/cucumber";
+import { Given, When, Then, Before, BeforeAll } from "@cucumber/cucumber";
 import { v4 as uuidv4 } from "uuid";
-import { Vehicule, User, Fleet } from "../../Domain";
+import { Vehicle } from "../../Domain";
 import { clearDb } from "../../lib/clearDb";
 import {
   UserRepositorySQLite,
   FleetRepositorySQLite,
-  VehiculeRepositorySQLite,
-} from "../../Infra/db/RepositoryBase";
+  VehicleRepositorySQLite,
+} from "../../Infra/repositories/sqlite";
 import {
   CreateUserCommand,
   CreateUserHandler,
 } from "../../App/user/createUser";
 import {
-  RegisterVehiculeCommand,
-  RegisterVehiculeHandler,
-} from "../../App/fleet/registerVehicule";
+  RegisterVehicleCommand,
+  RegisterVehicleHandler,
+} from "../../App/fleet/registerVehicle";
 
-Before(async () => {
+const DB_FILE = "testDB.db";
+
+Before(async function () {
   await clearDb();
+  this.userRepository = new UserRepositorySQLite(DB_FILE);
+  this.fleetRepository = new FleetRepositorySQLite(DB_FILE);
+  this.vehicleRepository = new VehicleRepositorySQLite(DB_FILE);
+
+  await Promise.all([
+    this.userRepository.createTable(),
+    this.fleetRepository.createTable(),
+    this.vehicleRepository.createTable(),
+  ]);
 });
 
 Given(
   "I am an application user named {string}",
   async function (userName: string) {
-    this.userRepository = new UserRepositorySQLite("./super.db");
-    this.fleetRepository = new FleetRepositorySQLite("./super.db");
-    this.vehiculeRepository = new VehiculeRepositorySQLite("./super.db");
-
     const command = new CreateUserCommand(userName);
     const handler = new CreateUserHandler(
       this.userRepository,
@@ -43,17 +50,17 @@ Given("my fleet", function () {
 });
 
 Given("a vehicle", function () {
-  this.vehicule = new Vehicule(uuidv4());
+  this.vehicle = new Vehicle(uuidv4());
 });
 
 Given("I have registered this vehicle into my fleet", async function () {
-  const command = new RegisterVehiculeCommand(
+  const command = new RegisterVehicleCommand(
     this.fleet,
-    this.vehicule.getPlateNumber()
+    this.vehicle.getPlateNumber()
   );
-  const handler = new RegisterVehiculeHandler(
+  const handler = new RegisterVehicleHandler(
     this.fleetRepository,
-    this.vehiculeRepository
+    this.vehicleRepository
   );
   await handler.handle(command);
 });
@@ -75,13 +82,13 @@ Given(
 Given(
   "this vehicle has been registered into the other user's fleet",
   async function () {
-    const command = new RegisterVehiculeCommand(
+    const command = new RegisterVehicleCommand(
       this.otherFleet,
-      this.vehicule.getPlateNumber()
+      this.vehicle.getPlateNumber()
     );
-    const handler = new RegisterVehiculeHandler(
+    const handler = new RegisterVehicleHandler(
       this.fleetRepository,
-      this.vehiculeRepository
+      this.vehicleRepository
     );
     await handler.handle(command);
   }
@@ -89,13 +96,13 @@ Given(
 
 When("I register this vehicle into my fleet", async function () {
   try {
-    const command = new RegisterVehiculeCommand(
+    const command = new RegisterVehicleCommand(
       this.fleet,
-      this.vehicule.getPlateNumber()
+      this.vehicle.getPlateNumber()
     );
-    const handler = new RegisterVehiculeHandler(
+    const handler = new RegisterVehicleHandler(
       this.fleetRepository,
-      this.vehiculeRepository
+      this.vehicleRepository
     );
     this.result = await handler.handle(command);
   } catch (e) {
@@ -105,7 +112,7 @@ When("I register this vehicle into my fleet", async function () {
 
 Then("this vehicle should be part of my vehicle fleet", async function () {
   assert.deepStrictEqual(
-    this.result.getVehicules().includes(this.vehicule.getPlateNumber()),
+    this.result.getVehicles().includes(this.vehicle.getPlateNumber()),
     true
   );
 });
@@ -113,6 +120,6 @@ Then("this vehicle should be part of my vehicle fleet", async function () {
 Then(
   "I should be informed that this vehicle has already been registered into my fleet",
   function () {
-    assert.deepStrictEqual(this.result, Error("Duplicate vehicule"));
+    assert.deepStrictEqual(this.result, Error("Duplicate vehicle"));
   }
 );
