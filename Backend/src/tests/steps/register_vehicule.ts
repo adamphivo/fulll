@@ -1,13 +1,7 @@
 import assert from "assert";
-import { Given, When, Then, Before, BeforeAll } from "@cucumber/cucumber";
+import { Given, When, Then } from "@cucumber/cucumber";
 import { v4 as uuidv4 } from "uuid";
 import { Vehicle } from "../../Domain";
-import { clearDb } from "../../lib/clearDb";
-import {
-  UserRepositorySQLite,
-  FleetRepositorySQLite,
-  VehicleRepositorySQLite,
-} from "../../Infra/repositories/sqlite";
 import {
   CreateUserCommand,
   CreateUserHandler,
@@ -16,21 +10,6 @@ import {
   RegisterVehicleCommand,
   RegisterVehicleHandler,
 } from "../../App/fleet/registerVehicle";
-
-const DB_FILE = "testDB.db";
-
-Before(async function () {
-  await clearDb();
-  this.userRepository = new UserRepositorySQLite(DB_FILE);
-  this.fleetRepository = new FleetRepositorySQLite(DB_FILE);
-  this.vehicleRepository = new VehicleRepositorySQLite(DB_FILE);
-
-  await Promise.all([
-    this.userRepository.createTable(),
-    this.fleetRepository.createTable(),
-    this.vehicleRepository.createTable(),
-  ]);
-});
 
 Given(
   "I am an application user named {string}",
