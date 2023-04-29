@@ -1,0 +1,33 @@
+{
+  "name": "cucumber",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "cucumber-js --profile default",
+    "dev": "nodemon src/index.ts",
+    "clean": "rm -f fleet && rm -rf dist && rm -f *.db",
+    "compile": "tsc",
+    "makeExecutable": "ln -s dist/index.js fleet && chmod +x fleet",
+    "build": "npm run clean && npm run compile && npm run makeExecutable"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.1.0",
+    "@types/node": "^18.16.0",
+    "@types/uuid": "^9.0.1",
+    "cucumber-tsflow": "^4.0.0-rc.7",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.0"
+  }
+}
