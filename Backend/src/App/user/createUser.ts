@@ -14,6 +14,11 @@ export class CreateUserHandler {
   ) {}
 
   async handle(command: CreateUserCommand): Promise<User> {
+    // We make sure the user is not already registered
+    const exist = await this.userRepository.findById(command.id);
+    if (exist) {
+      throw Error("User already registered");
+    }
     // We create an empty fleet during the user creation
     const emptyFleet = new Fleet(uuidv4(), command.id, []);
     await this.fleetRepository.save(emptyFleet);
