@@ -9,6 +9,7 @@ export interface Location {
 export interface FleetRepository {
   save(fleet: Fleet): Promise<void>;
   findById(fleetId: string): Promise<Fleet | null>;
+  findByUserId(userId: string): Promise<Fleet | null>;
   registerVehicle(fleetId: string, vehicle: Vehicle): Promise<Fleet>;
 }
 

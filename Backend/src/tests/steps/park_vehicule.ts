@@ -12,7 +12,7 @@ Given("a location", function () {
 
 Given("my vehicle has been parked into this location", async function () {
   const command = new ParkVehicleCommand(
-    this.fleet,
+    this.fleet.getId(),
     this.vehicle.getPlateNumber(),
     this.location
   );
@@ -28,7 +28,7 @@ Given("my vehicle has been parked into this location", async function () {
 When("I park my vehicle at this location", async function () {
   try {
     const command = new ParkVehicleCommand(
-      this.fleet,
+      this.fleet.getId(),
       this.vehicle.getPlateNumber(),
       this.location
     );

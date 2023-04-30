@@ -73,6 +73,25 @@ export class FleetRepositorySQLite
     });
   }
 
+  async findByUserId(userId: string): Promise<Fleet | null> {
+    return new Promise((resolve, reject) => {
+      this.db.get(
+        "SELECT * FROM fleets WHERE userId = ?",
+        [userId],
+        (err: Error | null, row: FleetRow | undefined) => {
+          if (err) {
+            reject(err);
+          }
+          if (!row) {
+            resolve(null);
+          } else {
+            resolve(new Fleet(row.id, row.userId, row.vehicles.split("|")));
+          }
+        }
+      );
+    });
+  }
+
   async registerVehicle(fleetId: string, vehicle: Vehicle): Promise<Fleet> {
     const fleet = await this.findById(fleetId);
 
