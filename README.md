@@ -35,7 +35,7 @@ npm run build
 - Two kinds of repositories are implemented :
   - MemoryRepositories : they use the app memory
   - SQLiteRepositories : they use SQLite and a DB file
-- You can easily switch between those kind of repositories while instantiating the RepositoriesContainer : either in the Before step (tests) or in the index.ts entrty file (app).
+- You can easily switch between those kind of repositories while instantiating the RepositoriesContainer : either in the Before step (tests) or in the index.ts entry file (app).
 
 ### Step 3
 
