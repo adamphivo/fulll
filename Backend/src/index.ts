@@ -1,35 +1,26 @@
 #!/usr/bin/env node
 import commander from "commander";
+import chalk from "chalk";
 import type { Location } from "./types";
 import { CreateUserCommand, CreateUserHandler } from "./App/user/createUser";
-import {
-  ParkVehicleCommand,
-  ParkVehicleHandler,
-} from "./App/vehicle/parkVehicle";
-import {
-  RegisterVehicleCommand,
-  RegisterVehicleHandler,
-} from "./App/fleet/registerVehicle";
-import {
-  UserRepositorySQLite,
-  FleetRepositorySQLite,
-  VehicleRepositorySQLite,
-} from "./Infra/repositories/sqlite";
+import { ParkVehicleCommand, ParkVehicleHandler } from "./App/vehicle/parkVehicle";
+import { RegisterVehicleCommand, RegisterVehicleHandler } from "./App/fleet/registerVehicle";
+import { RepositoriesContainer } from "./Infra/repositories/container";
+import { Configuration } from "./Infra/configuration";
 
 async function main() {
-  const DB_FILE = "prodDB.db";
+  // Init program
   const program = new commander.Command();
 
-  const userRepo = new UserRepositorySQLite(DB_FILE);
-  const fleetRepo = new FleetRepositorySQLite(DB_FILE);
-  const vehicleRepo = new VehicleRepositorySQLite(DB_FILE);
+  // Get repositories
+  const container = new RepositoriesContainer(false);
+  const repositories = await container.getRepositories("sqlite");
+  if (!repositories) {
+    throw Error(Configuration.ERROR_MESSAGES.FAILED_REPOSITORIES_CREATION);
+  }
+  const { userRepo, fleetRepo, vehicleRepo } = repositories;
 
-  await Promise.all([
-    userRepo.createTable(),
-    fleetRepo.createTable(),
-    vehicleRepo.createTable(),
-  ]);
-
+  // Program actions
   program
     .command("create <userId>")
     .description("Register the user and create an empty fleet.")
@@ -38,9 +29,9 @@ async function main() {
         const command = new CreateUserCommand(userId);
         const handler = new CreateUserHandler(userRepo, fleetRepo);
         const user = await handler.handle(command);
-        console.log(user.getFleetId());
+        console.log(chalk.green.bold(user.getFleetId()));
       } catch (e) {
-        console.error(e);
+        console.error(chalk.red.bold(e));
       }
     });
 
@@ -51,47 +42,33 @@ async function main() {
       try {
         const command = new RegisterVehicleCommand(fleetId, vehiclePlateNumber);
         const handler = new RegisterVehicleHandler(fleetRepo, vehicleRepo);
-        const fleet = await handler.handle(command);
-        console.log(`Vehicule registered into fleet ${fleet.getId()}`);
+        await handler.handle(command);
+        console.log(chalk.green.bold(Configuration.SUCCESS_MESSAGES.REGISTERED_VEHICULE));
       } catch (e) {
-        console.error(e);
+        console.error(chalk.red.bold(e));
       }
     });
 
   program
-    .command(
-      "localize-vehicle <fleetId> <vehiclePlateNumber> <lat> <lng> [alt]"
-    )
+    .command("localize-vehicle <fleetId> <vehiclePlateNumber> <lat> <lng> [alt]")
     .description("Register a specific vehicle into a fleet.")
-    .action(
-      async (
-        fleetId: string,
-        vehiclePlateNumber: string,
-        lat: string,
-        lng: string,
-        alt: string
-      ) => {
-        try {
-          const location: Location = {
-            latitude: lat,
-            longitude: lng,
-            altitude: alt,
-          };
+    .action(async (fleetId: string, vehiclePlateNumber: string, lat: string, lng: string, alt: string) => {
+      try {
+        const location: Location = {
+          latitude: lat,
+          longitude: lng,
+          altitude: alt,
+        };
 
-          const command = new ParkVehicleCommand(
-            fleetId,
-            vehiclePlateNumber,
-            location
-          );
+        const command = new ParkVehicleCommand(fleetId, vehiclePlateNumber, location);
 
-          const handler = new ParkVehicleHandler(fleetRepo, vehicleRepo);
-          await handler.handle(command);
-          console.log("Vehicule localized !");
-        } catch (e) {
-          console.error(e);
-        }
+        const handler = new ParkVehicleHandler(fleetRepo, vehicleRepo);
+        await handler.handle(command);
+        console.log(chalk.green.bold(Configuration.SUCCESS_MESSAGES.LOCALIZED_VEHICLE));
+      } catch (e) {
+        console.error(chalk.red.bold(e));
       }
-    );
+    });
 
   program.parse(process.argv);
 }

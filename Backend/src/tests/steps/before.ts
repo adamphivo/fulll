@@ -1,23 +1,19 @@
 import { Before } from "@cucumber/cucumber";
 import { clearDb } from "../../lib/clearDb";
-import {
-  UserRepositorySQLite,
-  FleetRepositorySQLite,
-  VehicleRepositorySQLite,
-} from "../../Infra/repositories/sqlite";
-
-const DB_FILE = "testDB.db";
+import { Configuration } from "../../Infra/configuration";
+import { RepositoriesContainer } from "../../Infra/repositories/container";
 
 Before(async function () {
-  this.userRepository = new UserRepositorySQLite(DB_FILE);
-  this.fleetRepository = new FleetRepositorySQLite(DB_FILE);
-  this.vehicleRepository = new VehicleRepositorySQLite(DB_FILE);
+  const container = new RepositoriesContainer(true);
+  const repositories = await container.getRepositories("sqlite");
 
-  await Promise.all([
-    this.userRepository.createTable(),
-    this.fleetRepository.createTable(),
-    this.vehicleRepository.createTable(),
-  ]);
+  if (!repositories) {
+    throw Error(Configuration.ERROR_MESSAGES.FAILED_REPOSITORIES_CREATION);
+  }
+
+  this.userRepository = repositories.userRepo;
+  this.fleetRepository = repositories.fleetRepo;
+  this.vehicleRepository = repositories.vehicleRepo;
 
   await clearDb();
 });

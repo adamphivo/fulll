@@ -1,5 +1,6 @@
 import { Fleet } from "../../Domain";
 import { FleetRepository } from "../../types";
+import { Configuration } from "../../Infra/configuration";
 
 export class GetFleetQuery {
   constructor(public readonly userId: string) {}
@@ -12,7 +13,7 @@ export class GetFleetHandler {
     const fleet = await this.fleetRepository.findByUserId(query.userId);
 
     if (!fleet) {
-      throw Error("No fleet attached to this user.");
+      throw Error(Configuration.ERROR_MESSAGES.USER_HAS_NO_FLEET);
     }
 
     return fleet;

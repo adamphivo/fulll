@@ -24,6 +24,10 @@ npm run build
 
 # Use the fleet executable
 ./fleet
+
+# Note that to use ./fleet localize-vehicule with negative values, the "-" character need to be escaped
+# Example :
+./fleet localize-vehicle <fleetId> <vehiculeId> 123 /-12 456
 ```
 
 ### Repositories
@@ -31,6 +35,7 @@ npm run build
 - Two kinds of repositories are implemented :
   - MemoryRepositories : they use the app memory
   - SQLiteRepositories : they use SQLite and a DB file
+- You can easily switch between those kind of repositories while instantiating the RepositoriesContainer : either in the Before step (tests) or in the index.ts entrty file (app).
 
 ### Step 3
 
