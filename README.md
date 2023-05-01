@@ -25,9 +25,10 @@ npm run build
 # Use the fleet executable
 ./fleet
 
-# Note that to use ./fleet localize-vehicule with negative values, the "-" character need to be escaped
+# Note that to use ./fleet localize-vehicule with negative values, we need to override the "-" native behavior
+# (= set an option) by adding a "/" char before "-"
 # Example :
-./fleet localize-vehicle <fleetId> <vehiculeId> 123 /-12 456
+./fleet localize-vehicle <fleetId> <vehiculeId> 123.12 /-12.23 456
 ```
 
 ### Repositories

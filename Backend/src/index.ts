@@ -54,7 +54,7 @@ async function main() {
     .description("Register a specific vehicle into a fleet.")
     .action(async (fleetId: string, vehiclePlateNumber: string, lat: string, lng: string, alt: string) => {
       try {
-        // We need to remove the escape character that is required to input negative values
+        // Remove the nescessary "/" char to use "-" in command
         const formatedLat = lat.replace("/", "");
         const formatedLng = lng.replace("/", "");
         const formatedAlt = alt?.replace("/", "");
