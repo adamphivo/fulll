@@ -40,7 +40,7 @@ export class UserRepositorySQLite
       this.db.run(
         "INSERT OR REPLACE INTO users (id, fleetId) VALUES (?, ?)",
         [user.getId(), user.getFleetId()],
-        (err: Error | null, row: UserRow | undefined) => {
+        (err: Error | null) => {
           if (err) {
             reject(err);
           } else {

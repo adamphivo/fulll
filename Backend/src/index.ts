@@ -85,7 +85,7 @@ async function main() {
           );
 
           const handler = new ParkVehicleHandler(fleetRepo, vehicleRepo);
-          const vehicule = await handler.handle(command);
+          await handler.handle(command);
           console.log("Vehicule localized !");
         } catch (e) {
           console.error(e);
