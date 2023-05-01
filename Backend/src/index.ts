@@ -54,10 +54,15 @@ async function main() {
     .description("Register a specific vehicle into a fleet.")
     .action(async (fleetId: string, vehiclePlateNumber: string, lat: string, lng: string, alt: string) => {
       try {
+        // We need to remove the escape character that is required to input negative values
+        const formatedLat = lat.replace("/", "");
+        const formatedLng = lng.replace("/", "");
+        const formatedAlt = alt?.replace("/", "");
+
         const location: Location = {
-          latitude: lat,
-          longitude: lng,
-          altitude: alt,
+          latitude: formatedLat,
+          longitude: formatedLng,
+          altitude: formatedAlt,
         };
 
         const command = new ParkVehicleCommand(fleetId, vehiclePlateNumber, location);
@@ -65,6 +70,7 @@ async function main() {
         const handler = new ParkVehicleHandler(fleetRepo, vehicleRepo);
         await handler.handle(command);
         console.log(chalk.green.bold(Configuration.SUCCESS_MESSAGES.LOCALIZED_VEHICLE));
+        console.log(chalk.blue.bold(`➡️ https://www.google.com/maps?q=${formatedLat},${formatedLng}`));
       } catch (e) {
         console.error(chalk.red.bold(e));
       }
