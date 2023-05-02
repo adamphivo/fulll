@@ -1,11 +1,22 @@
-name: Backend CI
-run-name: Running Backend tests.
-on: [push]
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  Backend-CI:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - run: cd Backend
-      - run: npm i
-      - run: npm run test
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        working-directory: Backend
+        run: npm install
+
+      - name: Run tests
+        working-directory: Backend
+        run: npm run test
