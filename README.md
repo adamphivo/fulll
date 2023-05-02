@@ -1,5 +1,7 @@
 # Fulll hiring process submission
 
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adamphivo/fulll/ci.yml)
+
 ## ALGO
 
 ```sh
@@ -53,3 +55,5 @@ npm run build
   3. Run tests (Build job)
   4. Run build (Build job)
   5. Deploy build artifacts to a VPS or any other platform (Deploy job)
+
+- See a CI example for the backend repository : .github/workflows/ci.yml
